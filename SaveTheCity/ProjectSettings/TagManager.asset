@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Wall
+  - SafeSpot1
+  - SafeSpot2
+  - SafeSpot3
+  - SafeSpot4
+  - SafeSpot5
+  - SafeSpot6
+  - SafeSpot7
+  - SafeSpot8
+  - Speed1
+  - Speed2
+  - Speed3
+  - Speed4
+  - Jump1
+  - Jump2
+  - Jump3
+  - Jump4
+  - OuterWall
+  - FireBall1
+  - FireBall2
+  - crystal1Level1
+  - crystal2Level1
+  - crystal3Level1
+  - crystal4Level1
+  - level1Key
+  - sp1Level1
+  - sp2Level1
+  - sp3Level1
+  - sp4Level1
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
