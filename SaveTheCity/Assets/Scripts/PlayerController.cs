@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     //  Contolling Animation
 
     public Animator playerAnimation;
-   
+
 
     // Start is called before the first frame update
     void Start()
