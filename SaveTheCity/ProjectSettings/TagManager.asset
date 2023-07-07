@@ -34,6 +34,7 @@ TagManager:
   - sp2Level1
   - sp3Level1
   - sp4Level1
+  - outerwalllevel1
   layers:
   - Default
   - TransparentFX

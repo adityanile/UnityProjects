@@ -44,6 +44,7 @@ public class PauseManager : MonoBehaviour
 
     public void OnClickResume()
     {
+        gamepaused = false;
         Time.timeScale = 1;          // Continue the game
         pauseui.SetActive(false);
                

@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
 
     public Animator playerAnimation;
 
+    // Additional powerUp control
+    public bool motionrestricted = false;
 
     // Start is called before the first frame update
     void Start()
@@ -81,7 +83,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MotionManager();
+            MotionManager();
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -96,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     void MoveForward()
     {
-        if (moveForward)
+        if (moveForward && !motionrestricted)
         {
            float verticalInput = Input.GetAxis("Vertical");
 
@@ -110,7 +113,7 @@ public class PlayerController : MonoBehaviour
 
     void MoveBackward()
     {
-        if (moveBackward)
+        if (moveBackward && !motionrestricted)
         {
             float verticalInput = Input.GetAxis("Vertical");
 
