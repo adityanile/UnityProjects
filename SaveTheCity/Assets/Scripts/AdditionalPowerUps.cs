@@ -21,24 +21,49 @@ public class AdditionalPowerUps : MonoBehaviour
     */
 
     private GameObject originalmaze2;
+    private GameObject originalmaze1;
+    private GameObject originalmaze3;
+
+    private LevelManager levelmanager;
+
     public int waittime = 7;
 
     private PlayerController playerController;
     private bool seethroughtaken = false;
 
     private GameObject maze2path;
-    private bool showpath = false;
+    private GameObject maze1path;
+    private GameObject maze3path;
+
+    [SerializeField] private bool showpath = false;
     private int pathtime = 10;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-        maze2path = GameObject.Find("Path");
-
+        maze1path.SetActive(false);
         maze2path.SetActive(false);
-        originalmaze2 = GameObject.Find("OriginalMaze2");
+        maze3path.SetActive(false);
+
     }
+
+    void Awake()
+    {
+        // Initialise Refereences here bacause it starts before start
+
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        levelmanager = GameObject.Find("Player").GetComponent<LevelManager>();
+
+        maze1path = GameObject.Find("PathMaze1");
+        maze2path = GameObject.Find("PathMaze2");
+        maze3path = GameObject.Find("PathMaze3");
+
+        originalmaze2 = GameObject.Find("OriginalMaze2");
+        originalmaze1 = GameObject.Find("OriginalMaze1");
+        originalmaze3 = GameObject.Find("OriginalMaze3");
+
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -46,18 +71,45 @@ public class AdditionalPowerUps : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O) && !seethroughtaken)
         {
             seethroughtaken = true;
-
             playerController.motionrestricted = true;
-            StartCoroutine(ShowMaze());   
-            originalmaze2.SetActive(false);
+
+            if (levelmanager.currentmaze == 1)
+            {
+                StartCoroutine(ShowMaze());
+                originalmaze2.SetActive(false);
+            }
+            else if(levelmanager.currentmaze == 2)
+            {
+                StartCoroutine (ShowMaze());
+                originalmaze3.SetActive(false);
+            }
+            else if(levelmanager.currentmaze == 3)
+            {
+                StartCoroutine(ShowMaze());
+                originalmaze1.SetActive(false);
+            }
+
         }
 
         if (Input.GetKeyDown(KeyCode.P) && !showpath)
         {
-            showpath = false;
-            maze2path.SetActive(true);
-            StartCoroutine(ClosePath());
+            showpath = true;
 
+            if (levelmanager.currentmaze == 1)
+            {
+                StartCoroutine(ClosePath());
+                maze1path.SetActive(true);
+            }
+            else if (levelmanager.currentmaze == 2)
+            {
+                StartCoroutine(ClosePath());
+                maze2path.SetActive(true);
+            }
+            else if (levelmanager.currentmaze == 3)
+            {
+                StartCoroutine(ClosePath());
+                maze3path.SetActive(true);
+            }
         }
 
 
@@ -66,13 +118,21 @@ public class AdditionalPowerUps : MonoBehaviour
     IEnumerator ClosePath()
     {
         yield return new WaitForSeconds(pathtime);
+        showpath = false;
+
         maze2path.SetActive(false);
+        maze1path.SetActive(false);
+        maze3path.SetActive(false);
+
     }
 
     IEnumerator ShowMaze()
     {
         yield return new WaitForSeconds(waittime);
         originalmaze2.SetActive(true);
+        originalmaze3.SetActive(true);
+        originalmaze1.SetActive(true);
+
         playerController.motionrestricted = false;
         seethroughtaken = false;
     }

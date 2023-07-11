@@ -21,6 +21,12 @@ public class SafeSpotManager : MonoBehaviour
     public GameObject spot7;
     public GameObject spot8;
 
+    private GameObject sp1level3;
+    private GameObject sp2level3;
+    private GameObject sp3level3;
+    private GameObject sp4level3;
+    private GameObject sp5level3;
+
     public GameObject player;
 
     public ParticleSystem fireBallEffect;
@@ -55,6 +61,14 @@ public class SafeSpotManager : MonoBehaviour
 
         //Wall Explosion
         wallExplosion = GameObject.Find("WallExplosion").GetComponent<ParticleSystem>();
+
+        // Setting reference to all safespots of level3 from here
+        sp1level3 = GameObject.Find("SafeSpot1M3");
+        sp2level3 = GameObject.Find("SafeSpot2M3");
+        sp3level3 = GameObject.Find("SafeSpot3M3");
+        sp4level3 = GameObject.Find("SafeSpot4M3");
+        sp5level3 = GameObject.Find("SafeSpot5M3");
+
 
     }
 
@@ -227,6 +241,51 @@ public class SafeSpotManager : MonoBehaviour
             Debug.Log("Fire Ball Taken");
             Debug.Log("Fire Ball Current Count:- " + fireballCount);
         }
+
+
+        // Giving access to player having this script to change safespot state
+        if (gameObject.CompareTag("Player"))
+        {
+            if (collision.gameObject.CompareTag("Sp1Level3"))
+            {
+                safePosition = gameObject.transform.position;
+                Debug.Log("Safe Spot Saved");
+                 sp1level3.SetActive(false);
+
+            }
+            if (collision.gameObject.CompareTag("Sp2Level3"))
+            {
+                safePosition = gameObject.transform.position;
+                Debug.Log("Safe Spot Saved");
+                sp2level3.SetActive(false);
+
+            }
+            if (collision.gameObject.CompareTag("Sp3Level3"))
+            {
+                safePosition = gameObject.transform.position;
+                Debug.Log("Safe Spot Saved");
+                sp3level3.SetActive(false);
+
+            }
+            if (collision.gameObject.CompareTag("Sp4Level3"))
+            {
+                safePosition = gameObject.transform.position;
+                Debug.Log("Safe Spot Saved");
+                sp4level3.SetActive(false);
+
+            }
+            if (collision.gameObject.CompareTag("Sp5Level3"))
+            {
+                safePosition = gameObject.transform.position;
+                Debug.Log("Safe Spot Saved");
+                sp5level3.SetActive(false);
+
+            }
+        }
+
+
+
+
     }
 
 }

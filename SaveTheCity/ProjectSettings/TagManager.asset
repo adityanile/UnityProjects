@@ -35,6 +35,22 @@ TagManager:
   - sp3Level1
   - sp4Level1
   - outerwalllevel1
+  - Sp2Level3
+  - Sp1Level3
+  - Sp3Level3
+  - Sp4Level3
+  - Sp5Level3
+  - level2Key
+  - Level2BackKey
+  - Level1BackKey
+  - Crystal1Level2
+  - Crystal2Level2
+  - Crystal3Level2
+  - Crystal4Level2
+  - Crystal1Level3
+  - Crystal2Level3
+  - Crystal3Level3
+  - Crystal4Level3
   layers:
   - Default
   - TransparentFX
