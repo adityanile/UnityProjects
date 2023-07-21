@@ -36,7 +36,9 @@ public class SafeSpotManager : MonoBehaviour
     private PlayerController setflags;
     private PowerUps fireballController;
 
-
+    public bool collidedwithmazewall = false;
+    public bool collidedwithouterwall = false;
+    public bool safespotcollected = false;
 
     // Fire Ball Manager
 
@@ -109,24 +111,28 @@ public class SafeSpotManager : MonoBehaviour
         if (collision.gameObject.CompareTag("sp1Level1"))
         {
             safePosition = gameObject.transform.position;
+            safespotcollected = true;
             Debug.Log("Safe Spot Saved");
             Destroy(sp1Level1);
 
         }
         if (collision.gameObject.CompareTag("sp2Level1"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             Destroy(sp2Level1);
         }
         if (collision.gameObject.CompareTag("sp3Level1"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             Destroy(sp3Level1);
         }
         if (collision.gameObject.CompareTag("sp4Level1"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             Destroy(sp4Level1);
@@ -135,6 +141,7 @@ public class SafeSpotManager : MonoBehaviour
         // Level3 Collision
         if (collision.gameObject.CompareTag("SafeSpot1"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             spot1.SetActive(false);
@@ -142,42 +149,49 @@ public class SafeSpotManager : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("SafeSpot2"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             spot2.SetActive(false);
         }
         if (collision.gameObject.CompareTag("SafeSpot3"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             spot3.SetActive(false);
         }
         if (collision.gameObject.CompareTag("SafeSpot4"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             spot4.SetActive(false);
         }
         if (collision.gameObject.CompareTag("SafeSpot5"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             spot5.SetActive(false);
         }
         if (collision.gameObject.CompareTag("SafeSpot6"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             spot6.SetActive(false);
         }
         if (collision.gameObject.CompareTag("SafeSpot7"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             spot7.SetActive(false);
         }
         if (collision.gameObject.CompareTag("SafeSpot8"))
         {
+            safespotcollected = true;
             safePosition = gameObject.transform.position;
             Debug.Log("Safe Spot Saved");
             spot8.SetActive(false);
@@ -190,6 +204,8 @@ public class SafeSpotManager : MonoBehaviour
             // If Fire Ball Taken Destroying the Wall
             if (fireballTaken)
             {
+                collidedwithmazewall = true;
+
                 wallExplosion.Play(); 
                 wallExplosionOn = true;
                 Destroy(collision.gameObject);
@@ -201,6 +217,8 @@ public class SafeSpotManager : MonoBehaviour
             }
             else
             {
+                collidedwithmazewall = true;
+
                 setflags.moveForward = false;
                 setflags.moveBackward = false;
                 setflags.moveLeft = false;
@@ -215,8 +233,11 @@ public class SafeSpotManager : MonoBehaviour
         {
             if (fireballTaken)
             {
+                collidedwithouterwall = true;
                 Debug.Log("Outer Wall Cannot Be Destroyed");
             }
+
+            collidedwithouterwall = true;
 
             setflags.moveForward = false;
             setflags.moveBackward = false;
@@ -248,6 +269,7 @@ public class SafeSpotManager : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Sp1Level3"))
             {
+                safespotcollected = true;
                 safePosition = gameObject.transform.position;
                 Debug.Log("Safe Spot Saved");
                  sp1level3.SetActive(false);
@@ -255,6 +277,7 @@ public class SafeSpotManager : MonoBehaviour
             }
             if (collision.gameObject.CompareTag("Sp2Level3"))
             {
+                safespotcollected = true;
                 safePosition = gameObject.transform.position;
                 Debug.Log("Safe Spot Saved");
                 sp2level3.SetActive(false);
@@ -262,6 +285,7 @@ public class SafeSpotManager : MonoBehaviour
             }
             if (collision.gameObject.CompareTag("Sp3Level3"))
             {
+                safespotcollected = true;
                 safePosition = gameObject.transform.position;
                 Debug.Log("Safe Spot Saved");
                 sp3level3.SetActive(false);
@@ -269,6 +293,7 @@ public class SafeSpotManager : MonoBehaviour
             }
             if (collision.gameObject.CompareTag("Sp4Level3"))
             {
+                safespotcollected = true;
                 safePosition = gameObject.transform.position;
                 Debug.Log("Safe Spot Saved");
                 sp4level3.SetActive(false);
@@ -276,16 +301,13 @@ public class SafeSpotManager : MonoBehaviour
             }
             if (collision.gameObject.CompareTag("Sp5Level3"))
             {
+                safespotcollected = true;
                 safePosition = gameObject.transform.position;
                 Debug.Log("Safe Spot Saved");
                 sp5level3.SetActive(false);
 
             }
         }
-
-
-
-
     }
 
 }
