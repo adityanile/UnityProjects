@@ -96,37 +96,21 @@ public class LevelManager : MonoBehaviour
 
             if (crystalcountlevel2 >= 4)
             {
-                maze2completed = true;
-                gameUI.doneonce = false;
-                additionalpowerups.onceamaze = true;   // When maze 1 completed allow additionalpoweerup for next maze
+                crystalcountlevel2 = 0;
+                allCrystalsCollected = true;
 
-                additionalpowerups.middlepanel.SetActive(false);
-                additionalpowerups.additionalpower1update.text = "";
-                additionalpowerups.additionalpower2update.text = "";
-                additionalpowerups.startpowerup1 = false;
-                additionalpowerups.startpowerup2 = false;
-
-
+                // Active key form level 2 to level 3 
                 level3key.SetActive(true);
             }
 
             if(crystalcountlevel3 >= 4)
             {
+                crystalcountlevel3 = 0;     // Setting again to zero to avoid the loop
+                allCrystalsCollected = true;
+
                 // Active key form level 3 to level 2 
-                maze3completed = true;
-                gameUI.doneonce = false;
-                additionalpowerups.onceamaze = true;   // When maze 1 completed allow additionalpoweerup for next maze
-
-                additionalpowerups.middlepanel.SetActive(false);
-                additionalpowerups.additionalpower1update.text = "";
-                additionalpowerups.additionalpower2update.text = "";
-                additionalpowerups.startpowerup1 = false;
-                additionalpowerups.startpowerup2 = false;
-
-
                 level2key2.SetActive(true);
             }
-
         }
 
         if(maze1completed && maze2completed && maze3completed)
@@ -185,21 +169,17 @@ public class LevelManager : MonoBehaviour
             if (collision.gameObject.CompareTag("level1Key"))
             {
                 crystalsCollected = 0;     // Restart Crystal Collection
-             
+                crystalcountlevel1 = 0;
                 maze1completed = true;
-                additionalpowerups.onceamaze = true;   // When maze 1 completed allow additionalpoweerup for next maze
-                gameUI.doneonce = false;
 
-                additionalpowerups.middlepanel.SetActive(false);
-                additionalpowerups.additionalpower1update.text = "";
-                additionalpowerups.additionalpower2update.text = "";
-                additionalpowerups.startpowerup1 = false;
-                additionalpowerups.startpowerup2 = false;
+                additionalpowerups.DestroyPowerUpUI();
 
                 // Even After taking the key , key will not be destroyed
                 player.transform.position = new Vector3(-511, transform.position.y, 407);  // teleport to maze3
                 levelUpgraded = true;
                 currentmaze = 3;
+
+                allCrystalsCollected = false;
 
                 // Activate Level1 backkey
                 level1backkey.SetActive(true);
@@ -207,34 +187,47 @@ public class LevelManager : MonoBehaviour
 
             if (collision.gameObject.CompareTag("level2Key"))
             {
-
                 crystalsCollected = 0;     // Restart Crystal Collection
-                Debug.Log("Crystals Collected:- " + crystalsCollected);
-
+                crystalcountlevel1 = 0;
                 maze1completed = true;
 
-                additionalpowerups.middlepanel.SetActive(false);
-                additionalpowerups.additionalpower1update.text = "";
-                additionalpowerups.additionalpower2update.text = "";
-                additionalpowerups.startpowerup1 = false;
-                additionalpowerups.startpowerup2 = false;
+                allCrystalsCollected = false;
 
-
-                gameUI.doneonce = false;
-                additionalpowerups.onceamaze = true;   // When maze 1 completed allow additionalpoweerup for next maze
+                additionalpowerups.DestroyPowerUpUI();  
 
                 // Even After taking the key , key will not be destroyed
                 player.transform.position = new Vector3(-657, transform.position.y, -1007);   // Teleport to maze2
+                currentmaze = 2;
 
                 // Set level2 back key active
                 level2backkey.SetActive(true);
-                currentmaze = 2;
-
                 levelUpgraded = true;
             }
 
-            // Managing Back Keys
+            // Two Additional Keys mangement
 
+            if (collision.gameObject.CompareTag("level3key"))  // This is the key at the end of maze 2 to maze 3
+            {
+                maze2completed = true;
+                additionalpowerups.DestroyPowerUpUI();
+
+                // Even After taking the key , key will not be destroyed
+                player.transform.position = new Vector3(-511, transform.position.y, 407);  // teleport to maze3
+                levelUpgraded = true;
+                currentmaze = 3;
+            }
+
+            if (collision.gameObject.CompareTag("level2key2"))  // This is the key at the end of maze 3 to maze 2
+            {
+                maze3completed = true;
+                additionalpowerups.DestroyPowerUpUI();
+
+                // Even After taking the key , key will not be destroyed
+                player.transform.position = new Vector3(-657, transform.position.y, -1007);   // Teleport to maze2
+                currentmaze = 2;
+            }
+
+            // Managing Back Keys
             if (collision.gameObject.CompareTag("Level1BackKey"))
             {
                 crystalsCollected = 0;     // Restart Crystal Collection
@@ -330,10 +323,6 @@ public class LevelManager : MonoBehaviour
                 Destroy(collision.gameObject);
                 Debug.Log("Crystals Collected:- " + crystalsCollected);
             }
-
-
         }
-
     }
-
 }

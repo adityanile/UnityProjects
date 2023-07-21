@@ -17,8 +17,6 @@ public class AdditionalPowerUps : MonoBehaviour
     2.    Correct path is Highlighted on the ground
           Player can move along that path for 10 sec
           Can be activated By P key
-          
-
     */
 
     // UI Management of AdditionalPowerrUP 
@@ -346,6 +344,18 @@ public class AdditionalPowerUps : MonoBehaviour
 
         playerController.motionrestricted = false;
         seethroughtaken = false;
+    }
+
+    public void DestroyPowerUpUI()  // This function will close the ongoing powerup ui when maze is completed
+    {
+        gameUI.doneonce = false;
+        onceamaze = true;   // When maze 1 completed allow additionalpoweerup for next maze
+
+        middlepanel.SetActive(false);
+        additionalpower1update.text = "";
+        additionalpower2update.text = "";
+        startpowerup1 = false;
+        startpowerup2 = false;
     }
 
 }

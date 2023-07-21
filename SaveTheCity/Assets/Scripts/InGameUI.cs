@@ -8,6 +8,7 @@ public class InGameUI : MonoBehaviour
 {
     private LevelManager levelManager;  // Reference to Level manager script on player
     private SafeSpotManager safeSpotManager; // Reference to SafeSpotmanager Script on player
+    private PlayerController playerController;  // When to Start the game
 
     public GameObject leftpanel;
     public GameObject rightpanel;
@@ -38,6 +39,9 @@ public class InGameUI : MonoBehaviour
     public GameObject allcrystalscollected;
     public bool doneonce = false;
 
+    // maze Completed UI's
+    public GameObject mainpanel;
+    public TextMeshProUGUI mazecompleted;
 
     private void Awake()
     {
@@ -47,6 +51,7 @@ public class InGameUI : MonoBehaviour
 
         levelManager = GameObject.Find("Player").GetComponent<LevelManager>();
         safeSpotManager = GameObject.Find("Player").GetComponent<SafeSpotManager>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
 
         leftpanel.SetActive(false);
         maze1time.text = "";
@@ -57,7 +62,13 @@ public class InGameUI : MonoBehaviour
         outerwallcollision.SetActive(false);
 
         cyrstalcollected.text = "";
-         
+        mazecompleted.text = "";
+        mainpanel.SetActive(false); 
+    }
+
+    void Start()
+    {
+        StartCoroutine( DisplayNotice() );    
     }
 
     // Update is called once per frame
@@ -72,17 +83,37 @@ public class InGameUI : MonoBehaviour
         CheckCystalCollected();
     }
 
+
     void UpdateTime()
     {
+        if (playerController.startgame)  // if Game is Started then only start the time
+        {
+            maintime.seconds += Time.deltaTime;
 
-        maintime.seconds += Time.deltaTime;
+            while (maintime.seconds >= 60)
+            {
+                maintime.seconds -= 60;
+                maintime.minutes++;
+            }
 
-        while(maintime.seconds >= 60) { 
-            maintime.seconds -= 60;
-            maintime.minutes++;
+            maintimer.text = "Time :- " + maintime.minutes + ":" + Convert.ToInt16(maintime.seconds);
         }
+    }
 
-        maintimer.text = "Time :- " + maintime.minutes + ":" + Convert.ToInt16( maintime.seconds );
+    // Give Notice to Read Info after 5sec of Game Starting
+    IEnumerator DisplayNotice()
+    {
+        yield return new WaitForSeconds(5);
+        mainpanel.SetActive(true);
+        mazecompleted.text = "To Understand The Game Completed \n GoTo The Portals Present Around You";
+        StartCoroutine( StopNotice() );
+    } 
+
+    IEnumerator StopNotice()
+    {
+        yield return new WaitForSeconds(uiwaittime);
+        mainpanel.SetActive(false);
+        mazecompleted.text = "";
     }
 
 
@@ -97,6 +128,11 @@ public class InGameUI : MonoBehaviour
             maintime.seconds = 0;
             maintime.minutes = 0;
 
+            // UI Update 
+            mainpanel.SetActive(true);
+            mazecompleted.text = "Congrats !! For Completing Maze 1";
+            StartCoroutine(DestroyMazeUpdate());
+
         }
         if (levelManager.maze2completed && !updatedtimemaze2)
         {
@@ -106,6 +142,11 @@ public class InGameUI : MonoBehaviour
             // Reset the clock
             maintime.seconds = 0;
             maintime.minutes = 0;
+
+            // UI Update 
+            mainpanel.SetActive(true);
+            mazecompleted.text = "Congrats !! For Completing Maze 2";
+            StartCoroutine(DestroyMazeUpdate());
 
         }
         if (levelManager.maze3completed && !updatedtimemaze3)
@@ -117,8 +158,21 @@ public class InGameUI : MonoBehaviour
             maintime.seconds = 0;
             maintime.minutes = 0;
 
+            // UI Update 
+            mainpanel.SetActive(true);
+            mazecompleted.text = "Congrats !! For Completing Maze 3";
+            StartCoroutine(DestroyMazeUpdate());
+
         }
     }
+
+    IEnumerator DestroyMazeUpdate()
+    {
+        yield return new WaitForSeconds(uiwaittime);
+        mainpanel.SetActive(false);
+        mazecompleted.text = "";
+    }
+
 
     void WallCollisonUI()
     {
@@ -164,6 +218,9 @@ public class InGameUI : MonoBehaviour
     {
         if (levelManager.crystalcollected)
         {
+            mazewallcollision.SetActive(false);
+            outerwallcollision.SetActive(false);
+
             levelManager.crystalcollected = false;
             leftpanel.SetActive(true);
             cyrstalcollected.text = "Congrats ! " + levelManager.crystalsCollected + "  / 4 Crystals Collected";
@@ -172,6 +229,9 @@ public class InGameUI : MonoBehaviour
 
         if (levelManager.allCrystalsCollected && !doneonce)
         {
+            mazewallcollision.SetActive(false);
+            outerwallcollision.SetActive(false);
+
             levelManager.allCrystalsCollected = false;
             doneonce = true;
             leftpanel.SetActive(true);
@@ -200,8 +260,6 @@ public class InGameUI : MonoBehaviour
         leftpanel.SetActive(false);
 
     }
-
-
 }
 
 public class GameTime

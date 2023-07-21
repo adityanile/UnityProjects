@@ -51,6 +51,13 @@ TagManager:
   - Crystal2Level3
   - Crystal3Level3
   - Crystal4Level3
+  - level2key2
+  - level3key
+  - Mark1
+  - Mark2
+  - Mark3
+  - Mark4
+  - Starter
   layers:
   - Default
   - TransparentFX

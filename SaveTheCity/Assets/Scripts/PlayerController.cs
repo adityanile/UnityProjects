@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody playerRB;
 
-   
+    public bool startgame = false;
 
     public bool moveForward = true;
     public bool moveBackward = true;
@@ -92,6 +92,13 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+        }
+
+        // When To Start The game
+        if (collision.gameObject.CompareTag("Starter"))
+        {
+            Destroy(collision.gameObject);
+            startgame = true;
         }
 
     }
