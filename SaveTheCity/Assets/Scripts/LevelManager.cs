@@ -6,8 +6,9 @@ public class LevelManager : MonoBehaviour
 {
 
     // Every Crysta You Acquire Gives you magical power in the form of powerUps
-
     public int crystalsCollected = 0;       // This is the count to display in the UI
+
+    private PowerUps powerUps;  // Get Power ups Script on player
 
     // Separate count for activation of keys
     public int crystalcountlevel1 = 0;
@@ -16,20 +17,13 @@ public class LevelManager : MonoBehaviour
 
     public bool crystalcollected = false;
 
-
     public GameObject player;
     public bool levelUpgraded = false;
     public bool allCrystalsCollected = false;
 
     private AdditionalPowerUps additionalpowerups;
     private InGameUI gameUI;
-
-    // For Level 1
-    public GameObject crystal1Level1;
-    public GameObject crystal2Level1;
-    public GameObject crystal3Level1;
-    public GameObject crystal4Level1;
-
+    
     public GameObject level1Key;   // Takes you level 3 from 1
     private GameObject level2key;  // Takes you level 2 from 1
     private GameObject level3key;  // Takes you level 3 from 2
@@ -44,11 +38,14 @@ public class LevelManager : MonoBehaviour
 
     public int currentmaze = 1;
 
-     GameObject ropebridgelevel1;
+    GameObject ropebridgelevel1;
 
     // Start is called before the first frame update
     void Start()
     {
+        powerUps = GameObject.Find("Player").GetComponent<PowerUps>();
+        gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
+
         if (gameObject.CompareTag("Player"))
         {
             ropebridgelevel1.SetActive(false);
@@ -71,8 +68,7 @@ public class LevelManager : MonoBehaviour
         level2key2 = GameObject.Find("level2Key2");
 
         additionalpowerups = GameObject.Find("AdditionalPowerUps").GetComponent<AdditionalPowerUps>();
-        gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
-
+        
     }
 
     // Update is called once per frame
@@ -123,45 +119,7 @@ public class LevelManager : MonoBehaviour
 
 
     void OnCollisionEnter(Collision collision)
-    {
-        // Level 1 All Collisions
-        if (collision.gameObject.CompareTag("crystal1Level1"))
-        {
-            crystalcollected = true;
-
-            crystalcountlevel1++;
-            crystalsCollected++;
-            Destroy(crystal1Level1);
-            Debug.Log("Crystals Collected:- " + crystalsCollected);
-        }
-        if (collision.gameObject.CompareTag("crystal2Level1"))
-        {
-            crystalcollected = true;
-
-            crystalcountlevel1++;
-            crystalsCollected++;
-            Destroy(crystal2Level1);
-            Debug.Log("Crystals Collected:- " + crystalsCollected);
-        }
-        if (collision.gameObject.CompareTag("crystal3Level1"))
-        {
-            crystalcollected = true;
-
-            crystalcountlevel1++;
-            crystalsCollected++;
-            Destroy(crystal3Level1);
-            Debug.Log("Crystals Collected:- " + crystalsCollected);
-        }
-        if (collision.gameObject.CompareTag("crystal4Level1"))
-        {
-            crystalcollected = true;
-
-            crystalcountlevel1++;
-            crystalsCollected++;
-            Destroy(crystal4Level1);
-            Debug.Log("Crystals Collected:- " + crystalsCollected);
-        }
-
+    {  
         // Allowing only player to control keys
         if (gameObject.CompareTag("Player"))
         {
@@ -171,6 +129,10 @@ public class LevelManager : MonoBehaviour
                 crystalsCollected = 0;     // Restart Crystal Collection
                 crystalcountlevel1 = 0;
                 maze1completed = true;
+
+                // Activate one speedup , jumpup
+                powerUps.maxJumpUps = 1;
+                powerUps.maxSpeedUps = 1;
 
                 additionalpowerups.DestroyPowerUpUI();
 
@@ -191,6 +153,10 @@ public class LevelManager : MonoBehaviour
                 crystalcountlevel1 = 0;
                 maze1completed = true;
 
+                // Activate one speedup , jumpup
+                powerUps.maxJumpUps = 1;
+                powerUps.maxSpeedUps = 1;
+
                 allCrystalsCollected = false;
 
                 additionalpowerups.DestroyPowerUpUI();  
@@ -208,6 +174,8 @@ public class LevelManager : MonoBehaviour
 
             if (collision.gameObject.CompareTag("level3key"))  // This is the key at the end of maze 2 to maze 3
             {
+                crystalsCollected = 0;
+
                 maze2completed = true;
                 additionalpowerups.DestroyPowerUpUI();
 
@@ -219,6 +187,8 @@ public class LevelManager : MonoBehaviour
 
             if (collision.gameObject.CompareTag("level2key2"))  // This is the key at the end of maze 3 to maze 2
             {
+                crystalsCollected = 0;
+
                 maze3completed = true;
                 additionalpowerups.DestroyPowerUpUI();
 
@@ -244,9 +214,17 @@ public class LevelManager : MonoBehaviour
             }
 
 
-            // Crystals Managemnet of level 2
+            // Crystals Managemnet
 
-            if (collision.gameObject.CompareTag("Crystal1Level2"))
+            if (collision.gameObject.CompareTag("Level1Crystal"))
+            {
+                crystalcollected = true;
+                crystalcountlevel1++;
+                crystalsCollected++;
+                Destroy(collision.gameObject);
+                Debug.Log("Crystals Collected:- " + crystalsCollected);
+            }
+            if (collision.gameObject.CompareTag("Level2Crystal"))
             {
                 crystalcollected = true;
 
@@ -255,66 +233,7 @@ public class LevelManager : MonoBehaviour
                 Destroy(collision.gameObject);
                 Debug.Log("Crystals Collected:- " + crystalsCollected);
             }
-
-            if (collision.gameObject.CompareTag("Crystal2Level2"))
-            {
-                crystalcollected = true;
-
-                crystalcountlevel2++;
-                crystalsCollected++;
-                Destroy(collision.gameObject);
-                Debug.Log("Crystals Collected:- " + crystalsCollected);
-            }
-            if (collision.gameObject.CompareTag("Crystal3Level2"))
-            {
-                crystalcollected = true;
-
-                crystalcountlevel2++;
-                crystalsCollected++;
-                Destroy(collision.gameObject);
-                Debug.Log("Crystals Collected:- " + crystalsCollected);
-            }
-            if (collision.gameObject.CompareTag("Crystal4Level2"))
-            {
-                crystalcollected = true;
-
-                crystalcountlevel2++;
-                crystalsCollected++;
-                Destroy(collision.gameObject);
-                Debug.Log("Crystals Collected:- " + crystalsCollected);
-            }
-
-            // Managing Level 3 Crystals
-
-            if (collision.gameObject.CompareTag("Crystal1Level3"))
-            {
-                crystalcollected = true;
-
-                crystalcountlevel3++;
-                crystalsCollected++;
-                Destroy(collision.gameObject);
-                Debug.Log("Crystals Collected:- " + crystalsCollected);
-            }
-
-            if (collision.gameObject.CompareTag("Crystal2Level3"))
-            {
-                crystalcollected = true;
-
-                crystalcountlevel3++;
-                crystalsCollected++;
-                Destroy(collision.gameObject);
-                Debug.Log("Crystals Collected:- " + crystalsCollected);
-            }
-            if (collision.gameObject.CompareTag("Crystal3Level3"))
-            {
-                crystalcollected = true;
-
-                crystalcountlevel3++;
-                crystalsCollected++;
-                Destroy(collision.gameObject);
-                Debug.Log("Crystals Collected:- " + crystalsCollected);
-            }
-            if (collision.gameObject.CompareTag("Crystal4Level3"))
+            if (collision.gameObject.CompareTag("Level3Crystal"))
             {
                 crystalcollected = true;
 

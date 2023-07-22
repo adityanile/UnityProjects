@@ -48,9 +48,9 @@ public class AdditionalPowerUps : MonoBehaviour
     // When to Activate AdditionalPowerUps
     private InGameUI gameUI;
 
-    int maze1activatetime = 1;  //in minutes
-    int maze2activatetime = 1;
-    int maze3activatetime = 1;
+    int maze1activatetime = 2;  //in minutes
+    int maze2activatetime = 4;
+    int maze3activatetime = 4;
 
     public bool startpowerup1 = false;
     public bool startpowerup2 = false;
@@ -225,6 +225,7 @@ public class AdditionalPowerUps : MonoBehaviour
             additionalpower1update.text = "";
             additionalpower2update.text = "";
 
+            addtionalpowerup2.SetActive(false);
             middlepanel.SetActive(true);
             addtionalpowerup.SetActive(true);
             StartCoroutine(DestroypowerUpNotice());

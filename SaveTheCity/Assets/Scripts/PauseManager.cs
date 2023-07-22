@@ -10,9 +10,12 @@ public class PauseManager : MonoBehaviour
     private bool gamepaused = false;
 
     private LevelManager levelManager;
+    private PowerUps powerUps;
+    private SafeSpotManager spotManager;
 
     public TextMeshProUGUI currenmaze;
     public TextMeshProUGUI crystalscollected;
+    public TextMeshProUGUI powerupstatus;
 
     public GameObject helpbutton;
     public GameObject helptext;
@@ -21,8 +24,12 @@ public class PauseManager : MonoBehaviour
     void Start()
     {
         levelManager = GameObject.Find("Player").GetComponent<LevelManager>();
+        powerUps = GameObject.Find("Player").GetComponent<PowerUps>();
+        spotManager = GameObject.Find("Player").GetComponent<SafeSpotManager>();
+
         pauseui.SetActive(false);
         currenmaze.text = "";
+        powerupstatus.text = "";
 
         helptext.SetActive(false);
     }
@@ -53,6 +60,13 @@ public class PauseManager : MonoBehaviour
     {
         currenmaze.text = "Current Maze:- " + levelManager.currentmaze;
         crystalscollected.text = "Crystals Collected:- " + levelManager.crystalsCollected;
+
+        if (levelManager.maze1completed)    // If Maze 1 completed then only show status of PowerUps
+        {
+            powerupstatus.text = "Power Up Status:- \n\nSpeed Up :- " + powerUps.maxSpeedUps +
+                                 "\nJump Up :- " + powerUps.maxJumpUps +
+                                 "\nFire Ball :- " + spotManager.fireballCount;
+        }
     }
 
     public void OnClickHelp()

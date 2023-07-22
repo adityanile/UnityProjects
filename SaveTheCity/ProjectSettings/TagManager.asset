@@ -6,51 +6,12 @@ TagManager:
   tags:
   - Ground
   - Wall
-  - SafeSpot1
-  - SafeSpot2
-  - SafeSpot3
-  - SafeSpot4
-  - SafeSpot5
-  - SafeSpot6
-  - SafeSpot7
-  - SafeSpot8
-  - Speed1
-  - Speed2
-  - Speed3
-  - Speed4
-  - Jump1
-  - Jump2
-  - Jump3
-  - Jump4
   - OuterWall
-  - FireBall1
-  - FireBall2
-  - crystal1Level1
-  - crystal2Level1
-  - crystal3Level1
-  - crystal4Level1
   - level1Key
-  - sp1Level1
-  - sp2Level1
-  - sp3Level1
-  - sp4Level1
   - outerwalllevel1
-  - Sp2Level3
-  - Sp1Level3
-  - Sp3Level3
-  - Sp4Level3
-  - Sp5Level3
   - level2Key
   - Level2BackKey
   - Level1BackKey
-  - Crystal1Level2
-  - Crystal2Level2
-  - Crystal3Level2
-  - Crystal4Level2
-  - Crystal1Level3
-  - Crystal2Level3
-  - Crystal3Level3
-  - Crystal4Level3
   - level2key2
   - level3key
   - Mark1
@@ -58,6 +19,13 @@ TagManager:
   - Mark3
   - Mark4
   - Starter
+  - SpeedUp
+  - JumpUp
+  - SafeSpot
+  - FireBall
+  - Level1Crystal
+  - Level2Crystal
+  - Level3Crystal
   layers:
   - Default
   - TransparentFX

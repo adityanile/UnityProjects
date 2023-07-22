@@ -43,6 +43,13 @@ public class InGameUI : MonoBehaviour
     public GameObject mainpanel;
     public TextMeshProUGUI mazecompleted;
 
+    // Power UP UI
+    public GameObject powerupupdate;
+    public GameObject powerupuse;
+    public GameObject speeduptaken;
+    public GameObject jumpuptaken; 
+    public GameObject fireballtaken;
+
     private void Awake()
     {
         // Initialise timer
@@ -166,13 +173,78 @@ public class InGameUI : MonoBehaviour
         }
     }
 
-    IEnumerator DestroyMazeUpdate()
+    // All PowerUps Updates
+
+    void PowerUpUIUpdates()
     {
-        yield return new WaitForSeconds(uiwaittime);
-        mainpanel.SetActive(false);
-        mazecompleted.text = "";
+        leftpanel.SetActive(true);
+        powerupupdate.SetActive(true);
+        safespottext.SetActive(false);
+        StartCoroutine(LaterPowerUpUIUpdate());   // Middle panel Update
+        StartCoroutine(DestroyPowerUp());
     }
 
+    IEnumerator LaterPowerUpUIUpdate()
+    {
+        yield return new WaitForSeconds(3);
+        mainpanel.SetActive(true);
+        powerupuse.SetActive(true);
+        StartCoroutine(DestroyLaterPowerUp());
+    }
+
+    IEnumerator DestroyLaterPowerUp() {
+        yield return new WaitForSeconds(uiwaittime);
+        mainpanel.SetActive(false);
+        powerupuse.SetActive(false);
+    }
+
+    IEnumerator DestroyPowerUp()
+    {
+        yield return new WaitForSeconds(uiwaittime);
+        leftpanel.SetActive(false);
+        powerupupdate.SetActive(false);
+    }
+
+    IEnumerator DestroyMazeUpdate()
+    {
+        yield return new WaitForSeconds(uiwaittime / 2);
+        mainpanel.SetActive(false);
+        mazecompleted.text = "";
+
+        if (levelManager.maze1completed && !levelManager.maze2completed && !levelManager.maze3completed)
+        {
+            PowerUpUIUpdates();
+        }
+
+    }
+
+    public void SpeedUpTakenUpdate()
+    {
+        mainpanel.SetActive(true);
+        speeduptaken.SetActive(true);
+        StartCoroutine(StopPowerTakenUI());
+    }
+    public void JumpUpTakenUpdate()
+    {
+        mainpanel.SetActive(true);
+        jumpuptaken.SetActive(true);
+        StartCoroutine(StopPowerTakenUI());
+    }
+    public void FireBallTakenUpdate()
+    {
+        mainpanel.SetActive(true);
+        fireballtaken.SetActive(true);
+        StartCoroutine(StopPowerTakenUI());
+    }
+
+    IEnumerator StopPowerTakenUI()
+    {
+        yield return new WaitForSeconds(2);
+        mainpanel.SetActive(false);
+        speeduptaken.SetActive(false);
+        jumpuptaken.SetActive(false);
+        fireballtaken.SetActive(false);
+    }
 
     void WallCollisonUI()
     {
@@ -220,6 +292,7 @@ public class InGameUI : MonoBehaviour
         {
             mazewallcollision.SetActive(false);
             outerwallcollision.SetActive(false);
+            safespottext.SetActive(false) ;
 
             levelManager.crystalcollected = false;
             leftpanel.SetActive(true);
