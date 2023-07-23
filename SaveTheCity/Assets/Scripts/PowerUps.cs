@@ -20,6 +20,7 @@ public class PowerUps : MonoBehaviour
 
     // PowerUps Taken Particle Effect
     private ParticleSystem powerUpsTaken;
+    public ParticleSystem speedupaura;
 
     float countDown = 10;  // Power Upgrade For 10 sec
     
@@ -33,6 +34,7 @@ public class PowerUps : MonoBehaviour
         gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
 
         powerUpsTaken = GameObject.Find("PowerTaken").GetComponent<ParticleSystem>();  // Getting Access To Particle Sysytem
+       
     }
 
     // Update is called once per frame
@@ -58,7 +60,8 @@ public class PowerUps : MonoBehaviour
             upgrades.walkingSpeed = 80;
             maxSpeedUps--;
 
-            // Jump Up Effect
+            speedupaura.Play();
+            
             powerUpsTaken.Play();
             StartCoroutine(StopEffect());       // Stopping the effect 
 
@@ -90,6 +93,8 @@ public class PowerUps : MonoBehaviour
         Debug.Log("Speed Set To Normal");
         effectcooldown = 2;    // Setting up Effect Cooldown for next Effect
         upgrades.walkingSpeed = 30.0f;
+        speedupaura.Stop();
+
     }
 
     IEnumerator StopJumpUp()

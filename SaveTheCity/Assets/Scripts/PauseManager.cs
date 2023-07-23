@@ -20,6 +20,8 @@ public class PauseManager : MonoBehaviour
     public GameObject helpbutton;
     public GameObject helptext;
 
+    public bool playingagain = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,7 +63,7 @@ public class PauseManager : MonoBehaviour
         currenmaze.text = "Current Maze:- " + levelManager.currentmaze;
         crystalscollected.text = "Crystals Collected:- " + levelManager.crystalsCollected;
 
-        if (levelManager.maze1completed)    // If Maze 1 completed then only show status of PowerUps
+        if (levelManager.maze1completed || playingagain)    // If Maze 1 completed then only show status of PowerUps
         {
             powerupstatus.text = "Power Up Status:- \n\nSpeed Up :- " + powerUps.maxSpeedUps +
                                  "\nJump Up :- " + powerUps.maxJumpUps +

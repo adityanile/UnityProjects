@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour
 
     private AdditionalPowerUps additionalpowerups;
     private InGameUI gameUI;
+    private SafeSpotManager safeSpot;
     
     public GameObject level1Key;   // Takes you level 3 from 1
     private GameObject level2key;  // Takes you level 2 from 1
@@ -40,11 +41,15 @@ public class LevelManager : MonoBehaviour
 
     GameObject ropebridgelevel1;
 
+    public GameObject winnerbase;
+    public bool alreadyattheend = false;
+
     // Start is called before the first frame update
     void Start()
     {
         powerUps = GameObject.Find("Player").GetComponent<PowerUps>();
         gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
+        safeSpot = GameObject.Find("Player").GetComponent<SafeSpotManager>();
 
         if (gameObject.CompareTag("Player"))
         {
@@ -54,7 +59,7 @@ public class LevelManager : MonoBehaviour
             level2key2.SetActive(false);
         }
         level1Key.SetActive(false);
-
+       
     }
 
     void Awake()
@@ -66,6 +71,7 @@ public class LevelManager : MonoBehaviour
 
         level3key = GameObject.Find("level3Key");
         level2key2 = GameObject.Find("level2Key2");
+        winnerbase = GameObject.Find("WinnerBase");
 
         additionalpowerups = GameObject.Find("AdditionalPowerUps").GetComponent<AdditionalPowerUps>();
         
@@ -107,14 +113,24 @@ public class LevelManager : MonoBehaviour
                 // Active key form level 3 to level 2 
                 level2key2.SetActive(true);
             }
+
+            if (maze1completed && maze2completed && maze3completed && !alreadyattheend)
+            {
+                alreadyattheend = true;
+
+                gameUI.leftpanel.SetActive(false);
+                gameUI.middlepanel.SetActive(false);
+                // What will happen when All maze are completed
+                currentmaze = 0;
+                crystalsCollected = 12;
+
+                winnerbase.SetActive(true);
+                transform.position = new Vector3(-1057, transform.position.y, 32);
+
+                StartCoroutine(gameUI.WinnerBaseUIUpdate());  // Start Last Ui Update when enter winner base
+
+            }
         }
-
-        if(maze1completed && maze2completed && maze3completed)
-        {
-            // What will happen when All maze are completed
-        }
-
-
     }
 
 
@@ -126,7 +142,7 @@ public class LevelManager : MonoBehaviour
             // Collision with Key1
             if (collision.gameObject.CompareTag("level1Key"))
             {
-                crystalsCollected = 0;     // Restart Crystal Collection
+                crystalsCollected = 0;
                 crystalcountlevel1 = 0;
                 maze1completed = true;
 
@@ -145,11 +161,14 @@ public class LevelManager : MonoBehaviour
 
                 // Activate Level1 backkey
                 level1backkey.SetActive(true);
+
+                // Setting SafeSpot position
+                safeSpot.safePosition = gameObject.transform.position; 
             }
 
             if (collision.gameObject.CompareTag("level2Key"))
             {
-                crystalsCollected = 0;     // Restart Crystal Collection
+                crystalsCollected = 0;
                 crystalcountlevel1 = 0;
                 maze1completed = true;
 
@@ -168,6 +187,9 @@ public class LevelManager : MonoBehaviour
                 // Set level2 back key active
                 level2backkey.SetActive(true);
                 levelUpgraded = true;
+
+                // Setting SafeSpot position
+                safeSpot.safePosition = gameObject.transform.position;
             }
 
             // Two Additional Keys mangement
@@ -175,7 +197,6 @@ public class LevelManager : MonoBehaviour
             if (collision.gameObject.CompareTag("level3key"))  // This is the key at the end of maze 2 to maze 3
             {
                 crystalsCollected = 0;
-
                 maze2completed = true;
                 additionalpowerups.DestroyPowerUpUI();
 
@@ -183,31 +204,36 @@ public class LevelManager : MonoBehaviour
                 player.transform.position = new Vector3(-511, transform.position.y, 407);  // teleport to maze3
                 levelUpgraded = true;
                 currentmaze = 3;
+
+                // Setting SafeSpot position
+                safeSpot.safePosition = gameObject.transform.position;
             }
 
             if (collision.gameObject.CompareTag("level2key2"))  // This is the key at the end of maze 3 to maze 2
             {
                 crystalsCollected = 0;
-
                 maze3completed = true;
                 additionalpowerups.DestroyPowerUpUI();
 
                 // Even After taking the key , key will not be destroyed
                 player.transform.position = new Vector3(-657, transform.position.y, -1007);   // Teleport to maze2
                 currentmaze = 2;
+
+                // Setting SafeSpot position
+                safeSpot.safePosition = gameObject.transform.position;
             }
 
             // Managing Back Keys
             if (collision.gameObject.CompareTag("Level1BackKey"))
             {
-                crystalsCollected = 0;     // Restart Crystal Collection
+                crystalsCollected = 0;
                 Debug.Log("Crystals Collected:- " + crystalsCollected);
 
                 player.transform.position = new Vector3(-613.7f, 34.7f, -340.2f);
             }
             if (collision.gameObject.CompareTag("Level2BackKey"))
             {
-                crystalsCollected = 0;     // Restart Crystal Collection
+                crystalsCollected = 0;
                 Debug.Log("Crystals Collected:- " + crystalsCollected);
 
                 player.transform.position = new Vector3(-613.7f, 34.7f, -340.2f);

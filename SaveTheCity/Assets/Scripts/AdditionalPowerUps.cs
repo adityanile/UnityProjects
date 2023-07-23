@@ -65,6 +65,8 @@ public class AdditionalPowerUps : MonoBehaviour
     public int maze3power1count = 5;
     public int maze3power2count = 5;
 
+    public ParticleSystem showpathaura;
+    public GameObject seethrougheffect;
 
     // Start is called before the first frame update
     void Start()
@@ -79,6 +81,7 @@ public class AdditionalPowerUps : MonoBehaviour
         addtionalpowerup2.SetActive(false);
         additionalpower1update.text = "";
         additionalpower2update.text = "";
+        seethrougheffect.SetActive(false);
     }
 
     void Awake()
@@ -130,6 +133,7 @@ public class AdditionalPowerUps : MonoBehaviour
 
             seethroughtaken = true;
             playerController.motionrestricted = true;
+            seethrougheffect.SetActive(true);         //Effects
 
             if (levelmanager.currentmaze == 1)
             {
@@ -159,7 +163,7 @@ public class AdditionalPowerUps : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P) && !showpath)
         {
             showpath = true;
-
+            showpathaura.Play();  // When using Show Path aura
             addtionalpowerup2.SetActive(false);  // UI Notice
 
             if (levelmanager.currentmaze == 1)
@@ -330,6 +334,8 @@ public class AdditionalPowerUps : MonoBehaviour
         yield return new WaitForSeconds(pathtime);
         showpath = false;
 
+        showpathaura.Stop();  // Stop the Effect
+
         maze2path.SetActive(false);
         maze1path.SetActive(false);
         maze3path.SetActive(false);
@@ -342,6 +348,8 @@ public class AdditionalPowerUps : MonoBehaviour
         originalmaze2.SetActive(true);
         originalmaze3.SetActive(true);
         originalmaze1.SetActive(true);
+
+        seethrougheffect.SetActive(false);   // Setting effect off
 
         playerController.motionrestricted = false;
         seethroughtaken = false;

@@ -50,6 +50,7 @@ public class InGameUI : MonoBehaviour
     public GameObject jumpuptaken; 
     public GameObject fireballtaken;
 
+    public GameObject gamecompleted;
     private void Awake()
     {
         // Initialise timer
@@ -67,6 +68,7 @@ public class InGameUI : MonoBehaviour
 
         mazewallcollision.SetActive(false);
         outerwallcollision.SetActive(false);
+        gamecompleted.SetActive(false);
 
         cyrstalcollected.text = "";
         mazecompleted.text = "";
@@ -332,6 +334,21 @@ public class InGameUI : MonoBehaviour
         outerwallcollision.SetActive(false);
         leftpanel.SetActive(false);
 
+    }
+
+    public IEnumerator WinnerBaseUIUpdate()
+    {
+        yield return new WaitForSeconds(6);
+        mainpanel.SetActive(true);
+        gamecompleted.SetActive(true);
+
+        StartCoroutine(DestroyWinnerBaseUpdate());
+    }
+    IEnumerator DestroyWinnerBaseUpdate()
+    {
+        yield return new WaitForSeconds(4);
+        mainpanel.SetActive(false);
+        gamecompleted.SetActive(false);
     }
 }
 

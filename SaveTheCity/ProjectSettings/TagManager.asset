@@ -26,6 +26,10 @@ TagManager:
   - Level1Crystal
   - Level2Crystal
   - Level3Crystal
+  - MainMark
+  - Maze1Mark
+  - Maze2Mark
+  - Maze3Mark
   layers:
   - Default
   - TransparentFX
