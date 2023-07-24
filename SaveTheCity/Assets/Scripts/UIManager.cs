@@ -32,6 +32,10 @@ public class UIManager : MonoBehaviour
         option.SetActive(false);
         optiontext.SetActive(true);
     }
+    public void OnClickExit()
+    {
+        Application.Quit();
+    }
 
    
 

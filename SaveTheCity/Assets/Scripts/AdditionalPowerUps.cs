@@ -68,10 +68,15 @@ public class AdditionalPowerUps : MonoBehaviour
     public ParticleSystem showpathaura;
     public GameObject seethrougheffect;
 
+    private AudioSource playaudio;
+    public AudioClip pathaudio;
+    public AudioClip seethrough;
+
     // Start is called before the first frame update
     void Start()
     {
         gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
+        playaudio = GameObject.Find("Player").GetComponent<AudioSource>();
 
         maze1path.SetActive(false);
         maze2path.SetActive(false);
@@ -90,6 +95,7 @@ public class AdditionalPowerUps : MonoBehaviour
 
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         levelmanager = GameObject.Find("Player").GetComponent<LevelManager>();
+        playaudio = GameObject.Find("Player").GetComponent<AudioSource>();
 
         maze1path = GameObject.Find("PathMaze1");
         maze2path = GameObject.Find("PathMaze2");
@@ -131,6 +137,8 @@ public class AdditionalPowerUps : MonoBehaviour
         {
             addtionalpowerup2.SetActive(false);  // UI Notice
 
+            playaudio.PlayOneShot(seethrough, 1);
+
             seethroughtaken = true;
             playerController.motionrestricted = true;
             seethrougheffect.SetActive(true);         //Effects
@@ -162,6 +170,8 @@ public class AdditionalPowerUps : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P) && !showpath)
         {
+            playaudio.PlayOneShot(pathaudio, 1);
+
             showpath = true;
             showpathaura.Play();  // When using Show Path aura
             addtionalpowerup2.SetActive(false);  // UI Notice

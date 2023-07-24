@@ -19,7 +19,8 @@ public class InGameUI : MonoBehaviour
 
     // All Timer Management
     public TextMeshProUGUI maintimer;
-    public GameTime maintime = new GameTime();
+    public GameTime maintime = new GameTime(); // New membeers to Gametime Class
+
     public TextMeshProUGUI maze1time;
     public TextMeshProUGUI maze2time;
     public TextMeshProUGUI maze3time;
@@ -125,52 +126,51 @@ public class InGameUI : MonoBehaviour
         mazecompleted.text = "";
     }
 
+    public void ResetClock()
+    { 
+        maintime.seconds = 0;
+        maintime.minutes = 0;
+    }
 
-   void CheckMazeCompleted()
+    void CheckMazeCompleted()
     {
         if (levelManager.maze1completed && !updatedtimemaze1)
         {
             updatedtimemaze1 = true;
-            maze1time.text = "1st Maze Completed in :- " + maintime.minutes + ":" + Convert.ToInt16(maintime.seconds);
-
-            // Reset the clock
-            maintime.seconds = 0;
-            maintime.minutes = 0;
-
+        
             // UI Update 
             mainpanel.SetActive(true);
             mazecompleted.text = "Congrats !! For Completing Maze 1";
             StartCoroutine(DestroyMazeUpdate());
 
+            // Audio For Maze Completed
+            levelManager.playaudio.PlayOneShot(levelManager.mazecomplete, 1);
+
         }
         if (levelManager.maze2completed && !updatedtimemaze2)
         {
             updatedtimemaze2 = true;
-            maze2time.text = "2nd Maze Completed in :- " + maintime.minutes + ":" + Convert.ToInt16(maintime.seconds);
-
-            // Reset the clock
-            maintime.seconds = 0;
-            maintime.minutes = 0;
 
             // UI Update 
             mainpanel.SetActive(true);
             mazecompleted.text = "Congrats !! For Completing Maze 2";
             StartCoroutine(DestroyMazeUpdate());
 
+            // Audio For Maze Completed
+            levelManager.playaudio.PlayOneShot(levelManager.mazecomplete, 1); 
+
         }
         if (levelManager.maze3completed && !updatedtimemaze3)
         {
             updatedtimemaze3 = true;
-            maze3time.text = "3rd Maze Completed in :- " + maintime.minutes + ":" + Convert.ToInt16(maintime.seconds);
-
-            // Reset the clock
-            maintime.seconds = 0;
-            maintime.minutes = 0;
 
             // UI Update 
             mainpanel.SetActive(true);
             mazecompleted.text = "Congrats !! For Completing Maze 3";
             StartCoroutine(DestroyMazeUpdate());
+
+            // Audio For Maze Completed
+            levelManager.playaudio.PlayOneShot(levelManager.mazecomplete, 1);
 
         }
     }
@@ -179,6 +179,8 @@ public class InGameUI : MonoBehaviour
 
     void PowerUpUIUpdates()
     {
+        levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
         leftpanel.SetActive(true);
         powerupupdate.SetActive(true);
         safespottext.SetActive(false);
@@ -189,6 +191,9 @@ public class InGameUI : MonoBehaviour
     IEnumerator LaterPowerUpUIUpdate()
     {
         yield return new WaitForSeconds(3);
+
+        levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
         mainpanel.SetActive(true);
         powerupuse.SetActive(true);
         StartCoroutine(DestroyLaterPowerUp());
@@ -222,18 +227,24 @@ public class InGameUI : MonoBehaviour
 
     public void SpeedUpTakenUpdate()
     {
+        levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
         mainpanel.SetActive(true);
         speeduptaken.SetActive(true);
         StartCoroutine(StopPowerTakenUI());
     }
     public void JumpUpTakenUpdate()
     {
+        levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
         mainpanel.SetActive(true);
         jumpuptaken.SetActive(true);
         StartCoroutine(StopPowerTakenUI());
     }
     public void FireBallTakenUpdate()
     {
+        levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
         mainpanel.SetActive(true);
         fireballtaken.SetActive(true);
         StartCoroutine(StopPowerTakenUI());
@@ -252,9 +263,12 @@ public class InGameUI : MonoBehaviour
     {
         if (safeSpotManager.collidedwithmazewall)
         {
+            levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
             safeSpotManager.collidedwithmazewall = false;
 
             safespottext.SetActive(false);
+            outerwallcollision.SetActive(false);
 
             leftpanel.SetActive(true);
             mazewallcollision.SetActive(true);
@@ -262,9 +276,12 @@ public class InGameUI : MonoBehaviour
         }
         if (safeSpotManager.collidedwithouterwall)
         {
+            levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
             safeSpotManager.collidedwithouterwall = false;
 
             safespottext.SetActive(false);
+            mazewallcollision.SetActive(false);
 
             leftpanel.SetActive(true);
             outerwallcollision.SetActive(true);
@@ -276,11 +293,14 @@ public class InGameUI : MonoBehaviour
     {
         if (safeSpotManager.safespotcollected)
         {
+            levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
             safeSpotManager.safespotcollected = false;
 
             // To avoid collision between UI
             mazewallcollision.SetActive(false);
             outerwallcollision.SetActive(false);
+            cyrstalcollected.text = "";
 
             leftpanel.SetActive(true);
             safespottext.SetActive(true);
@@ -292,6 +312,8 @@ public class InGameUI : MonoBehaviour
     {
         if (levelManager.crystalcollected)
         {
+            levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
             mazewallcollision.SetActive(false);
             outerwallcollision.SetActive(false);
             safespottext.SetActive(false) ;
@@ -304,6 +326,8 @@ public class InGameUI : MonoBehaviour
 
         if (levelManager.allCrystalsCollected && !doneonce)
         {
+            levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
             mazewallcollision.SetActive(false);
             outerwallcollision.SetActive(false);
 
@@ -339,8 +363,11 @@ public class InGameUI : MonoBehaviour
     public IEnumerator WinnerBaseUIUpdate()
     {
         yield return new WaitForSeconds(6);
+        levelManager.playaudio.PlayOneShot(levelManager.notice, 1);
+
         mainpanel.SetActive(true);
         gamecompleted.SetActive(true);
+        levelManager.playaudio.PlayOneShot(levelManager.allmazecompleted, 1);
 
         StartCoroutine(DestroyWinnerBaseUpdate());
     }
@@ -350,7 +377,7 @@ public class InGameUI : MonoBehaviour
         mainpanel.SetActive(false);
         gamecompleted.SetActive(false);
     }
-}
+ }
 
 public class GameTime
 {

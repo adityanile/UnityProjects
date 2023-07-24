@@ -7,6 +7,7 @@ public class WinnerUI : MonoBehaviour
     public LevelManager levelManager;
     public InGameUI gameUI;
     private PauseManager pauseManager;
+    private GameMusic gameMusic;
 
     public GameObject mainmark;
     public GameObject maze1mark;
@@ -20,12 +21,17 @@ public class WinnerUI : MonoBehaviour
 
     public ParticleSystem powerfulaura;
 
+    private AudioSource playaudio;
+    public AudioClip applause;
+
     // Start is called before the first frame update
     void Start()
     {
         levelManager = GetComponent<LevelManager>();
         gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
         pauseManager = GameObject.Find("PauseUI").GetComponent<PauseManager>();
+        playaudio = GetComponent<AudioSource>();
+        gameMusic = GameObject.Find("GameAudio").GetComponent<GameMusic>();
 
         panel.SetActive(false);
 
@@ -74,6 +80,7 @@ public class WinnerUI : MonoBehaviour
             panel.SetActive(false);
             mainmark.SetActive(false);
 
+            playaudio.PlayOneShot(applause, 1);
             powerfulaura.Play();       // Start Powerful Aura When Player Submits Crystals at winnerbase
         }
         if (other.gameObject.CompareTag("Maze1Mark"))
@@ -110,6 +117,8 @@ public class WinnerUI : MonoBehaviour
         // Pause UI Powerup status Update
         pauseManager.playingagain = true;
 
+        gameMusic.Maze1Audio();
+
     }
     public void OnClickMaze2()
     {
@@ -122,6 +131,8 @@ public class WinnerUI : MonoBehaviour
         levelManager.currentmaze = 2;
         levelManager.alreadyattheend = false;
 
+        gameMusic.Maze2Audio();
+
     }
     public void OnClickMaze3()
     {
@@ -133,6 +144,8 @@ public class WinnerUI : MonoBehaviour
         gameUI.maintime.seconds = 0;
         levelManager.currentmaze = 3;
         levelManager.alreadyattheend = false;
+
+        gameMusic.Maze3Audio();
 
     }
 }

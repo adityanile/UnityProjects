@@ -26,11 +26,20 @@ public class SafeSpotManager : MonoBehaviour
     private ParticleSystem wallExplosion;
     float coolDown = 3;
 
+    private AudioSource playaudio;
+    public AudioClip mazewallhit;
+    public AudioClip outerwallhit;
+    public AudioClip safespot;
+    public AudioClip poweruptaken;
+    public AudioClip fireballinuse;
+
     // Start is called before the first frame update
     void Start()
     {
         setflags = GameObject.Find("Player").GetComponent<PlayerController>();
         gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
+        playaudio = GameObject.Find("Player").GetComponent<AudioSource>();
+
         //Fire Ball Effect
         fireBallEffect = GameObject.Find("FireBallEffect").GetComponent<ParticleSystem>();
 
@@ -73,6 +82,8 @@ public class SafeSpotManager : MonoBehaviour
             // If Fire Ball Taken Destroying the Wall
             if (fireballTaken)
             {
+                playaudio.PlayOneShot(fireballinuse, 1);
+
                 wallExplosion.Play();           // Start Wall Collision Effect 
                 StartCoroutine(StopEffect());   // Stop effect of wall collision
                 fireBallEffect.Stop();
@@ -85,6 +96,8 @@ public class SafeSpotManager : MonoBehaviour
             }
             else
             {
+                playaudio.PlayOneShot(mazewallhit, 1);
+
                 collidedwithmazewall = true;
 
                 setflags.moveForward = false;
@@ -99,12 +112,6 @@ public class SafeSpotManager : MonoBehaviour
        // For Avoiding The Destruction of Outer Wall of Maze
         if (collision.gameObject.CompareTag("OuterWall"))
         {
-            if (fireballTaken)
-            {
-                collidedwithouterwall = true;
-                Debug.Log("Outer Wall Cannot Be Destroyed");
-            }
-
             collidedwithouterwall = true;
 
             setflags.moveForward = false;
@@ -112,12 +119,15 @@ public class SafeSpotManager : MonoBehaviour
             setflags.moveLeft = false;
             setflags.moveRight = false;
 
+            playaudio.PlayOneShot(outerwallhit, 1);
             player.transform.position = safePosition;
         }
 
        // Checking if fire ball Taken
        if (collision.gameObject.CompareTag("FireBall"))
        {
+            playaudio.PlayOneShot(poweruptaken, 1);
+
             gameUI.FireBallTakenUpdate();     // Set UI Update
             fireballCount++;
             Destroy(collision.gameObject);
@@ -126,8 +136,9 @@ public class SafeSpotManager : MonoBehaviour
        
             if (collision.gameObject.CompareTag("SafeSpot"))
             {
+                playaudio.PlayOneShot(safespot, 1);
+            
                 safespotcollected = true;  // For UI Update
-
                 safePosition = gameObject.transform.position;   // Save Player Position when SafeSpot Taken
                 Debug.Log("Safe Spot Saved");
                 Destroy(collision.gameObject);

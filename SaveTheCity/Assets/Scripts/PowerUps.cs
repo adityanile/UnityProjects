@@ -27,11 +27,16 @@ public class PowerUps : MonoBehaviour
     // Maintaining Ui changes
     private InGameUI gameUI;
 
+    // PowerUps Audio
+    private AudioSource playaudio;
+    public AudioClip powerupcollected;
+
     // Start is called before the first frame update
     void Start()
     {
         upgrades = GameObject.Find("Player").GetComponent<PlayerController>();
         gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
+        playaudio = GetComponent<AudioSource>();
 
         powerUpsTaken = GameObject.Find("PowerTaken").GetComponent<ParticleSystem>();  // Getting Access To Particle Sysytem
        
@@ -48,6 +53,7 @@ public class PowerUps : MonoBehaviour
         {
                 GetJumpUp();
         }
+
     }
 
    
@@ -59,6 +65,8 @@ public class PowerUps : MonoBehaviour
             Debug.Log("Speed Upgraded");
             upgrades.walkingSpeed = 80;
             maxSpeedUps--;
+
+            playaudio.PlayOneShot(powerupcollected, 1);
 
             speedupaura.Play();
             
@@ -117,6 +125,8 @@ public class PowerUps : MonoBehaviour
         // SpeedUps Collision Control
         if (collision.gameObject.CompareTag("SpeedUp"))
         {
+            playaudio.PlayOneShot(powerupcollected, 1);
+
             gameUI.SpeedUpTakenUpdate();    // Set UI Update
             maxSpeedUps++;
             Destroy(collision.gameObject);
@@ -126,6 +136,8 @@ public class PowerUps : MonoBehaviour
         // JumpUps Collision Control
         if (collision.gameObject.CompareTag("JumpUp"))
         {
+            playaudio.PlayOneShot(powerupcollected, 1);
+
             gameUI.JumpUpTakenUpdate();   // Set UI Updates
             maxJumpUps++;
             Destroy(collision.gameObject);

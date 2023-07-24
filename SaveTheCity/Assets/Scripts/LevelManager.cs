@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,9 @@ public class LevelManager : MonoBehaviour
     public int crystalsCollected = 0;       // This is the count to display in the UI
 
     private PowerUps powerUps;  // Get Power ups Script on player
+
+    //Game Music Control
+    private GameMusic gameMusic;
 
     // Separate count for activation of keys
     public int crystalcountlevel1 = 0;
@@ -36,13 +40,23 @@ public class LevelManager : MonoBehaviour
 
     private GameObject level1backkey;
     private GameObject level2backkey;
+    public bool backkey1active = true;
+    public bool backkey2active = true;
 
-    public int currentmaze = 1;
+    public int currentmaze = 0;
 
     GameObject ropebridgelevel1;
 
     public GameObject winnerbase;
     public bool alreadyattheend = false;
+    private bool winnerdoneonce = false;
+
+    public AudioSource playaudio;
+    public AudioClip cryatalcollected;
+    public AudioClip portaltravel;
+    public AudioClip mazecomplete;
+    public AudioClip allmazecompleted;
+    public AudioClip notice;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +64,8 @@ public class LevelManager : MonoBehaviour
         powerUps = GameObject.Find("Player").GetComponent<PowerUps>();
         gameUI = GameObject.Find("UIManager").GetComponent<InGameUI>();
         safeSpot = GameObject.Find("Player").GetComponent<SafeSpotManager>();
+        gameMusic = GameObject.Find("GameAudio").GetComponent<GameMusic>();
+        playaudio = GetComponent<AudioSource>();
 
         if (gameObject.CompareTag("Player"))
         {
@@ -127,8 +143,26 @@ public class LevelManager : MonoBehaviour
                 winnerbase.SetActive(true);
                 transform.position = new Vector3(-1057, transform.position.y, 32);
 
-                StartCoroutine(gameUI.WinnerBaseUIUpdate());  // Start Last Ui Update when enter winner base
+                if (!winnerdoneonce)
+                {
+                    winnerdoneonce = true;
+                    StartCoroutine(gameUI.WinnerBaseUIUpdate());  // Start Last Ui Update when enter winner base
+                }
+            }
+        }
 
+        if (backkey1active || backkey2active)
+        {
+            // Destroy Back Key After Collecting one Crystal
+            if (crystalcountlevel2 == 1)
+            {
+                backkey1active = false;
+                level2backkey.SetActive(false);
+            }
+            if (crystalcountlevel3 == 1)
+            {
+                backkey2active = false;
+                level1backkey.SetActive(false);
             }
         }
     }
@@ -142,6 +176,12 @@ public class LevelManager : MonoBehaviour
             // Collision with Key1
             if (collision.gameObject.CompareTag("level1Key"))
             {
+                // Time Management
+                gameUI.maze1time.text = "1st Maze Completed in :- " + gameUI.maintime.minutes + ":" + Convert.ToInt16(gameUI.maintime.seconds);
+                gameUI.ResetClock();
+
+                gameMusic.Maze3Audio();   // Start Maze 3 Audio
+                playaudio.PlayOneShot(portaltravel, 1);    // Portal Travel Sound
                 crystalsCollected = 0;
                 crystalcountlevel1 = 0;
                 maze1completed = true;
@@ -168,6 +208,13 @@ public class LevelManager : MonoBehaviour
 
             if (collision.gameObject.CompareTag("level2Key"))
             {
+                // Time Management
+                gameUI.maze1time.text = "1st Maze Completed in :- " + gameUI.maintime.minutes + ":" + Convert.ToInt16(gameUI.maintime.seconds);
+                gameUI.ResetClock();
+
+                gameMusic.Maze2Audio();       // Start Audio
+                playaudio.PlayOneShot(portaltravel, 1);    // Portal Travel Sound
+
                 crystalsCollected = 0;
                 crystalcountlevel1 = 0;
                 maze1completed = true;
@@ -196,6 +243,15 @@ public class LevelManager : MonoBehaviour
 
             if (collision.gameObject.CompareTag("level3key"))  // This is the key at the end of maze 2 to maze 3
             {
+                // Time Management
+                gameUI.maze2time.text = "2nd Maze Completed in :- " + gameUI.maintime.minutes + ":" + Convert.ToInt16(gameUI.maintime.seconds);
+                gameUI.ResetClock();
+
+                gameMusic.Maze3Audio();   // Start Maze 3 Audio
+                playaudio.PlayOneShot(portaltravel, 1);    // Portal Travel Sound
+
+                level2backkey.SetActive(true);   // Set The back key active that we set deactive at the start
+
                 crystalsCollected = 0;
                 maze2completed = true;
                 additionalpowerups.DestroyPowerUpUI();
@@ -211,6 +267,14 @@ public class LevelManager : MonoBehaviour
 
             if (collision.gameObject.CompareTag("level2key2"))  // This is the key at the end of maze 3 to maze 2
             {
+                // Time Management
+                gameUI.maze3time.text = "3rd Maze Completed in :- " + gameUI.maintime.minutes + ":" + Convert.ToInt16(gameUI.maintime.seconds);
+                gameUI.ResetClock();
+                gameMusic.Maze2Audio();       // Start Audio
+                playaudio.PlayOneShot(portaltravel, 1);    // Portal Travel Sound
+
+                level1backkey.SetActive(true);   // Set The back key active that we set deactive at the start
+
                 crystalsCollected = 0;
                 maze3completed = true;
                 additionalpowerups.DestroyPowerUpUI();
@@ -226,6 +290,8 @@ public class LevelManager : MonoBehaviour
             // Managing Back Keys
             if (collision.gameObject.CompareTag("Level1BackKey"))
             {
+                playaudio.PlayOneShot(portaltravel, 1);    // Portal Travel Sound
+
                 crystalsCollected = 0;
                 Debug.Log("Crystals Collected:- " + crystalsCollected);
 
@@ -233,6 +299,8 @@ public class LevelManager : MonoBehaviour
             }
             if (collision.gameObject.CompareTag("Level2BackKey"))
             {
+                playaudio.PlayOneShot(portaltravel, 1);    // Portal Travel Sound
+
                 crystalsCollected = 0;
                 Debug.Log("Crystals Collected:- " + crystalsCollected);
 
@@ -244,6 +312,8 @@ public class LevelManager : MonoBehaviour
 
             if (collision.gameObject.CompareTag("Level1Crystal"))
             {
+                playaudio.PlayOneShot(cryatalcollected, 1);
+
                 crystalcollected = true;
                 crystalcountlevel1++;
                 crystalsCollected++;
@@ -252,8 +322,9 @@ public class LevelManager : MonoBehaviour
             }
             if (collision.gameObject.CompareTag("Level2Crystal"))
             {
-                crystalcollected = true;
+                playaudio.PlayOneShot(cryatalcollected, 1);
 
+                crystalcollected = true;
                 crystalcountlevel2++;
                 crystalsCollected++;
                 Destroy(collision.gameObject);
@@ -261,8 +332,9 @@ public class LevelManager : MonoBehaviour
             }
             if (collision.gameObject.CompareTag("Level3Crystal"))
             {
-                crystalcollected = true;
+                playaudio.PlayOneShot(cryatalcollected, 1);
 
+                crystalcollected = true;
                 crystalcountlevel3++;
                 crystalsCollected++;
                 Destroy(collision.gameObject);

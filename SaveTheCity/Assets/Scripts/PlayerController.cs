@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private LevelManager levelManager;
+    private GameMusic gameMusic;
+
     public float walkingSpeed = 20.0f;
     public float runningSpeed = 40.0f;
     public float turnSpeed = 10.0f;
@@ -34,6 +37,11 @@ public class PlayerController : MonoBehaviour
     // Additional powerUp control
     public bool motionrestricted = false;
 
+    // PowerUps Audio
+    private AudioSource playaudio;
+    public AudioClip jumpupuse;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,9 +49,11 @@ public class PlayerController : MonoBehaviour
         Physics.gravity *= gravityModifier;
 
         powerUpsTaken = GameObject.Find("PowerTaken").GetComponent<ParticleSystem>();
-
+        levelManager = GameObject.Find("Player").GetComponent<LevelManager>();
         playerAnimation = GameObject.Find("Player").GetComponent<Animator>();
+        gameMusic = GameObject.Find("GameAudio").GetComponent<GameMusic>();
 
+        playaudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -55,6 +65,7 @@ public class PlayerController : MonoBehaviour
         {
             if (jumpSpeed >= 1100)
             {
+                playaudio.PlayOneShot(jumpupuse, 1);
                 powerUpsTaken.Play(); // play high jump Effect
                 jumpTaken = true;
                 effectcooldown = 2;
@@ -99,6 +110,9 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(collision.gameObject);
             startgame = true;
+            levelManager.currentmaze = 1;
+
+            gameMusic.Maze1Audio();       // Start Game Audio
         }
 
     }
