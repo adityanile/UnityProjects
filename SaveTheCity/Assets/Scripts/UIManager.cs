@@ -8,13 +8,21 @@ public class UIManager : MonoBehaviour
 {
     public GameObject option;
     public GameObject optiontext;
-   
+
+    public GameObject leaderboard;
+    public GameObject gameUI;
+    public LeaderBoard leaderBoard;
+
+    public GameObject notice;
 
     // Start is called before the first frame update
     void Start()
     {
         optiontext.SetActive(false);
-        
+        leaderboard.SetActive(false);
+
+        StartCoroutine(CloseNotice()); // Close Notice UI
+
     }
 
     // Update is called once per frame
@@ -37,8 +45,24 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
-   
+    public void OnClickLeaderBoard()
+    {
+        leaderBoard.GetLeaderBoard();       // Get Scores from LeaderBoard 
+        leaderboard.SetActive(true);
+        gameUI.SetActive(false);
+        leaderBoard.StartNote();
+    }
 
-    
+    public void OnClickBack()
+    {
+        leaderboard.SetActive(false);
+        gameUI.SetActive(true);
+    }
+
+    IEnumerator CloseNotice()
+    {
+        yield return new WaitForSeconds(7);
+        notice.SetActive(false);
+    }
 
 }

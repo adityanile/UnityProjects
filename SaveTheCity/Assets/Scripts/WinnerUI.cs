@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 
 public class WinnerUI : MonoBehaviour
 {
@@ -23,6 +25,13 @@ public class WinnerUI : MonoBehaviour
 
     private AudioSource playaudio;
     public AudioClip applause;
+
+    // Leaderboard
+    [SerializeField] private string name;
+    [SerializeField] private int time;
+
+    public TMP_InputField enteredname;
+    public GameObject markentry;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +79,13 @@ public class WinnerUI : MonoBehaviour
             maze3mark.SetActive(true);
         }
 
+        if(other.gameObject.CompareTag("LeaderBoard"))
+        {
+            rightpanel.SetActive(false);
+            panel.SetActive(true);
+            markentry.SetActive(true);
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -100,6 +116,15 @@ public class WinnerUI : MonoBehaviour
             rightpanel.SetActive(true);
             panel.SetActive(false);
             maze3mark.SetActive(false);
+        }
+
+        if (other.gameObject.CompareTag("LeaderBoard"))
+        {
+            rightpanel.SetActive(true);
+            panel.SetActive(false);
+            markentry.SetActive(false);
+
+            LeaderBoard.instance.gameObject.SetActive(false);
         }
     }
 
@@ -148,4 +173,20 @@ public class WinnerUI : MonoBehaviour
         gameMusic.Maze3Audio();
 
     }
+
+    public void OnClickSubmit()
+    {
+        LeaderBoard.instance.gameObject.SetActive(true);
+
+        name = enteredname.text;
+        time = gameUI.totaltime.minutes; // Show Minutes Taken To Complete
+
+        LeaderBoard.instance.SetLeaderBoard(name, time);     // Mark Enteries in LeaderBoard
+
+        panel.SetActive(false);
+        markentry.SetActive(false);
+
+        rightpanel.SetActive(false);
+    }
+
 }

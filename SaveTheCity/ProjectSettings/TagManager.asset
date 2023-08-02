@@ -30,6 +30,7 @@ TagManager:
   - Maze1Mark
   - Maze2Mark
   - Maze3Mark
+  - LeaderBoard
   layers:
   - Default
   - TransparentFX

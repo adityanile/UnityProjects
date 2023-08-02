@@ -21,6 +21,9 @@ public class InGameUI : MonoBehaviour
     public TextMeshProUGUI maintimer;
     public GameTime maintime = new GameTime(); // New membeers to Gametime Class
 
+    public GameTime totaltime = new GameTime(); // Time Which will be sent to Leader Board
+    public bool isgamecompleted = false;
+
     public TextMeshProUGUI maze1time;
     public TextMeshProUGUI maze2time;
     public TextMeshProUGUI maze3time;
@@ -106,6 +109,16 @@ public class InGameUI : MonoBehaviour
                 maintime.minutes++;
             }
 
+            if (!isgamecompleted)    // Update TotalTime Till The game is not Completed
+            {
+                totaltime.seconds += Time.deltaTime;
+
+                while (totaltime.seconds >= 60)
+                {
+                    totaltime.seconds -= 60;
+                    totaltime.minutes++;
+                }
+            }
             maintimer.text = "Time :- " + maintime.minutes + ":" + Convert.ToInt16(maintime.seconds);
         }
     }
@@ -115,7 +128,7 @@ public class InGameUI : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         mainpanel.SetActive(true);
-        mazecompleted.text = "To Understand The Game Completed \n GoTo The Portals Present Around You";
+        mazecompleted.text = "To Understand The Game Completely \n Go To The Portals Present Around You";
         StartCoroutine( StopNotice() );
     } 
 

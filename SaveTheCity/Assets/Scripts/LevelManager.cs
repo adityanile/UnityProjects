@@ -148,6 +148,8 @@ public class LevelManager : MonoBehaviour
                     winnerdoneonce = true;
                     StartCoroutine(gameUI.WinnerBaseUIUpdate());  // Start Last Ui Update when enter winner base
                 }
+                gameUI.isgamecompleted = true;   // Set game completed true to stop total time
+                Debug.Log("Total Time Taken:- " + gameUI.totaltime.minutes + ":" + gameUI.totaltime.seconds);
             }
         }
 
