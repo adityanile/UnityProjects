@@ -32,6 +32,7 @@ public class WinnerUI : MonoBehaviour
 
     public TMP_InputField enteredname;
     public GameObject markentry;
+    public GameObject leaderboard;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,7 @@ public class WinnerUI : MonoBehaviour
         playaudio = GetComponent<AudioSource>();
         gameMusic = GameObject.Find("GameAudio").GetComponent<GameMusic>();
 
+        leaderboard.SetActive(false);
         panel.SetActive(false);
 
     }
@@ -124,7 +126,7 @@ public class WinnerUI : MonoBehaviour
             panel.SetActive(false);
             markentry.SetActive(false);
 
-            LeaderBoard.instance.gameObject.SetActive(false);
+            leaderboard.SetActive(false);
         }
     }
 
@@ -176,12 +178,15 @@ public class WinnerUI : MonoBehaviour
 
     public void OnClickSubmit()
     {
-        LeaderBoard.instance.gameObject.SetActive(true);
+        leaderboard.SetActive(true);
 
         name = enteredname.text;
-        time = gameUI.totaltime.minutes; // Show Minutes Taken To Complete
+        time = Convert.ToInt16( gameUI.totaltime.seconds ); // Show Minutes Taken To Complete
 
-        LeaderBoard.instance.SetLeaderBoard(name, time);     // Mark Enteries in LeaderBoard
+        LeaderBoard leaderboardscript;
+        leaderboardscript = leaderboard.GetComponent<LeaderBoard>();
+
+        leaderboardscript.SetLeaderBoard(name, time);     // Mark Enteries in LeaderBoard
 
         panel.SetActive(false);
         markentry.SetActive(false);

@@ -21,21 +21,6 @@ public class LeaderBoard : MonoBehaviour
 
     private string publickey = "4477289268227c032d76ae36474c2f7656660c7943da9f12ddc153265391a121";
 
-    public static LeaderBoard instance;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        if(instance != null)
-        {
-            Destroy(gameObject);
-            return;                // This will stop the script and return ot the start
-        }
-
-       instance = this;
-       DontDestroyOnLoad(gameObject);
-    }
-
     public void GetLeaderBoard()
     {
         LeaderboardCreator.GetLeaderboard(publickey, true , ((gotdata) =>
@@ -45,7 +30,7 @@ public class LeaderBoard : MonoBehaviour
             for(int i=0; i < loopcount; i++)
             {
                 names[i].text = gotdata[i].Username;
-                time[i].text =  gotdata[i].Score.ToString();
+                time[i].text = SecondsToMinutes(gotdata[i].Score).ToString();
                 rank[i].text = (i+1).ToString();
             }
 
@@ -77,6 +62,19 @@ public class LeaderBoard : MonoBehaviour
     {
         yield return new WaitForSeconds(9);
         message.SetActive(false);
+    }
+
+    public float SecondsToMinutes(int seconds)
+    {
+        float minutes = 0;
+
+        while(seconds > 60)
+        {
+            seconds -= 60;
+            minutes++;
+        }
+
+        return (minutes + (seconds * 0.01f));
     }
 
 }

@@ -112,12 +112,6 @@ public class InGameUI : MonoBehaviour
             if (!isgamecompleted)    // Update TotalTime Till The game is not Completed
             {
                 totaltime.seconds += Time.deltaTime;
-
-                while (totaltime.seconds >= 60)
-                {
-                    totaltime.seconds -= 60;
-                    totaltime.minutes++;
-                }
             }
             maintimer.text = "Time :- " + maintime.minutes + ":" + Convert.ToInt16(maintime.seconds);
         }
@@ -265,7 +259,7 @@ public class InGameUI : MonoBehaviour
 
     IEnumerator StopPowerTakenUI()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         mainpanel.SetActive(false);
         speeduptaken.SetActive(false);
         jumpuptaken.SetActive(false);

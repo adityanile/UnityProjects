@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
@@ -88,6 +89,12 @@ public class PauseManager : MonoBehaviour
     public void OnClickExit()
     {
         Application.Quit();     // Quit the Application
+    }
+
+    public void OnClickRestart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(1); // Restart to the First Scene
     }
 
 }
